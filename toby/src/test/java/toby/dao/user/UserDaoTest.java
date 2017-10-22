@@ -3,21 +3,30 @@ package toby.dao.user;
 import java.sql.SQLException;
 
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import toby.domain.User;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:/applicationContext.xml")
 public class UserDaoTest {
 
+	@Autowired
+	UserDao userDao;
+	
 	@Test
 	public void test() throws ClassNotFoundException, SQLException {
-		@SuppressWarnings("resource")
+//		@SuppressWarnings("resource")
 //		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+//		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
 		
 //		UserDao userDao = new DaoFactory().userDao();
-		UserDao userDao = context.getBean("userDao", UserDao.class);
+//		UserDao userDao = context.getBean("userDao", UserDao.class);
+		
 		userDao.drop();
 		userDao.create();
 		

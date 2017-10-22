@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
 import toby.domain.User;
 
 /**
@@ -14,22 +16,20 @@ import toby.domain.User;
 public class UserDao {
 	
 //	초기에 설정하면 사용 중에는 바뀌지 않는 읽기전용 인스턴스 변수
-	private ConnectionMaker connectionMaker;
+//	private ConnectionMaker connectionMaker;
+	
+	private DataSource dataSource;
 //	매번 새로운 값으로 바뀌는 정보를 담은 인스턴스 변수, 심각한 문제가 발생한다.
 //	private Connection c;
 //	private User user;
 	
 
-//	public UserDao(ConnectionMaker connectionMaker) {
-//		this.connectionMaker = connectionMaker;
-//	}
-	
-	public void setConnectionMaker(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
-	public void create() throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+	public void create() throws SQLException {
+		Connection c = dataSource.getConnection();
 		PreparedStatement ps = c.prepareStatement(""
 				+ "create table users("
 				+ "	id		varchar(20) primary key,"
@@ -43,8 +43,8 @@ public class UserDao {
 		c.close();
 	}
 	
-	public void drop() throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+	public void drop() throws SQLException {
+		Connection c = dataSource.getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("drop table users");
 		
@@ -54,8 +54,8 @@ public class UserDao {
 		c.close();
 	}
 	
-	public void add(User user) throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+	public void add(User user) throws SQLException {
+		Connection c = dataSource.getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) values(?, ?, ?)");
 		ps.setString(1, user.getId());
@@ -68,8 +68,8 @@ public class UserDao {
 		c.close();
 	}
 	
-	public void get(String id) throws ClassNotFoundException, SQLException {
-		Connection c = connectionMaker.makeConnection();
+	public void get(String id) throws SQLException {
+		Connection c = dataSource.getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setString(1, id);

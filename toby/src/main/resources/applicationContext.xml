@@ -3,9 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 	
-	<bean id="connectionMaker" class="toby.dao.user.DConnectionMaker" />
-	<bean id="userDao" class="toby.dao.user.UserDao">
-		<property name="connectionMaker" ref="connectionMaker" />
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="org.h2.Driver"/>
+		<property name="url" value="jdbc:h2:~/toby"/>
+		<property name="username" value="sa"/>
 	</bean>
-	
+
+	<bean id="userDao" class="toby.dao.user.UserDao">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
 </beans>

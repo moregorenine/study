@@ -29,6 +29,14 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<!-- spring jdbc 생성 tool -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
 		<!-- spring log -->
 		<dependency>
