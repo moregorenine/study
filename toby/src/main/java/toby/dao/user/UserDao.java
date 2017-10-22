@@ -1,4 +1,4 @@
-package toby.dao;
+package toby.dao.user;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +13,18 @@ import toby.domain.User;
  */
 public class UserDao {
 	
+//	초기에 설정하면 사용 중에는 바뀌지 않는 읽기전용 인스턴스 변수
 	private ConnectionMaker connectionMaker;
+//	매번 새로운 값으로 바뀌는 정보를 담은 인스턴스 변수, 심각한 문제가 발생한다.
+//	private Connection c;
+//	private User user;
+	
 
-	public UserDao(ConnectionMaker connectionMaker) {
+//	public UserDao(ConnectionMaker connectionMaker) {
+//		this.connectionMaker = connectionMaker;
+//	}
+	
+	public void setConnectionMaker(ConnectionMaker connectionMaker) {
 		this.connectionMaker = connectionMaker;
 	}
 

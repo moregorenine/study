@@ -1,4 +1,4 @@
-package toby.dao;
+package toby.dao.user;
 
 import java.sql.Connection;
 import java.sql.SQLException;
