@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.springframework.dao.EmptyResultDataAccessException;
+
 import toby.domain.User;
 
 /**
@@ -37,7 +39,7 @@ public class UserDao {
 				+ "	password	varchar(10) not null"
 				+ ")");
 		
-		ps.execute();
+		ps.executeUpdate();
 		
 		ps.close();
 		c.close();
@@ -48,7 +50,7 @@ public class UserDao {
 		
 		PreparedStatement ps = c.prepareStatement("drop table users");
 		
-		ps.execute();
+		ps.executeUpdate();
 		
 		ps.close();
 		c.close();
@@ -68,22 +70,54 @@ public class UserDao {
 		c.close();
 	}
 	
-	public void get(String id) throws SQLException {
+	public void deleteAll() throws SQLException {
+		Connection c = dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("delete from users");
+		
+		ps.executeUpdate();
+		
+		ps.close();
+		c.close();
+	}
+	
+	public int getCount() throws SQLException {
+		Connection c = dataSource.getConnection();
+		
+		PreparedStatement ps = c.prepareStatement("select count(1) from users");
+		
+		ResultSet rs = ps.executeQuery();
+		rs.next();
+		int count = rs.getInt(1);
+		
+		rs.close();
+		ps.close();
+		c.close();
+		
+		return count;
+	}
+	
+	public User get(String id) throws SQLException {
 		Connection c = dataSource.getConnection();
 		
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setString(1, id);
 		
 		ResultSet rs = ps.executeQuery();
-		rs.next();
 		User searchUser = new User();
-		searchUser.setId(rs.getString("id"));
-		searchUser.setName(rs.getString("name"));
-		searchUser.setPassword(rs.getString("password"));
+		if(rs.next()) {
+			searchUser.setId(rs.getString("id"));
+			searchUser.setName(rs.getString("name"));
+			searchUser.setPassword(rs.getString("password"));
+		} else {
+			throw new EmptyResultDataAccessException(1);
+		}
 		
 		rs.close();
 		ps.close();
 		c.close();
+		
+		return searchUser;
 	}
 	
 }
