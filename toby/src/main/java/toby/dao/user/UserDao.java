@@ -29,7 +29,7 @@ public class UserDao {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
+	
 	public void create() throws SQLException {
 		Connection c = dataSource.getConnection();
 		PreparedStatement ps = c.prepareStatement(""
