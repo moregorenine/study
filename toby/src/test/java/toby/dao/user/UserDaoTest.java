@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.sql.SQLException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +36,7 @@ public class UserDaoTest {
 	private User user3;
 	
 	@Before
-	public void before() {
+	public void before() throws SQLException {
 //		DataSource dataSource = new SingleConnectionDataSource("jdbc:h2:~/toby", "sa", null, true);
 //		userDao.setDataSource(dataSource);
 //		log.debug("context", this.context);
@@ -46,6 +47,10 @@ public class UserDaoTest {
 		this.user3 = new User("userId3", "userName3", "pass3");
 	}
 	
+	@After
+	public void after() throws SQLException {
+	}
+	
 	@Test
 	public void test() throws ClassNotFoundException, SQLException {
 //		@SuppressWarnings("resource")
@@ -54,9 +59,6 @@ public class UserDaoTest {
 		
 //		UserDao userDao = new DaoFactory().userDao();
 //		UserDao userDao = context.getBean("userDao", UserDao.class);
-		
-		userDao.drop();
-		userDao.create();
 		
 		User insertUser = new User();
 		insertUser.setId("moregorenine");
@@ -92,6 +94,12 @@ public class UserDaoTest {
 		userDao.add(user3);
 		cnt = userDao.getCount();
 		assertThat(cnt, is(3));
+	}
+	
+	@Test
+	public void drop() throws SQLException {
+		userDao.drop();
+		userDao.create();
 	}
 	
 	@Test(expected=EmptyResultDataAccessException.class)

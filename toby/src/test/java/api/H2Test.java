@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,16 @@ public class H2Test {
 	private User user3;
 	
 	@Before
-	public void before() {
+	public void before() throws SQLException {
+		log.debug("userDao : " + userDao);
+		log.debug("test object : " + this);
+		this.user1 = new User("userId1", "userName1", "pass1");
+		this.user2 = new User("userId2", "userName2", "pass2");
+		this.user3 = new User("userId3", "userName3", "pass3");
+	}
+	
+	@After
+	public void after() throws SQLException {
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
 		this.user1 = new User("userId1", "userName1", "pass1");
@@ -51,8 +61,6 @@ public class H2Test {
 		DataSource dataSource = new SingleConnectionDataSource("jdbc:h2:~/toby", "sa", null, true);
 		assertNotNull(dataSource);
 		userDao.setDataSource(dataSource);
-		userDao.drop();
-		userDao.create();
 		
 		int cnt = 0;
 		userDao.deleteAll();
@@ -76,8 +84,6 @@ public class H2Test {
 		assertNotNull(dataSource);
 		
 		userDao.setDataSource(dataSource);
-		userDao.drop();
-		userDao.create();
 		
 		cnt = 0;
 		userDao.deleteAll();
