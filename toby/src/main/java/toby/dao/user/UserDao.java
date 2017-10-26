@@ -16,21 +16,13 @@ import toby.domain.User;
  */
 public class UserDao {
 	
-
-//	초기에 설정하면 사용 중에는 바뀌지 않는 읽기전용 인스턴스 변수
-//	private ConnectionMaker connectionMaker;
-	
-//	private DataSource dataSource;
-//	매번 새로운 값으로 바뀌는 정보를 담은 인스턴스 변수, 심각한 문제가 발생한다.
-//	private Connection c;
-//	private User user;
-	
 	private JdbcTemplate jdbcTemplate;
 
 	public void setDataSource(DataSource dataSource) {
 //		this.dataSource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(dataSource); 
 	}
+	
 	/**
 	 * USERS 테이블에 user param insert
 	 * @param user
@@ -73,6 +65,12 @@ public class UserDao {
 	
 	
 	
+	/**
+	 * USERS 테이블에서 id에 해당하는 User정보 조회 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 */
 	public User get(String id) throws SQLException {
 		return this.jdbcTemplate.queryForObject("select * from users where id = ?",
 				new Object[]{id},
@@ -88,7 +86,13 @@ public class UserDao {
 				});
 	}
 	
+	/**
+	 * USER 테이블에 데이터 갯수 반환
+	 * @return
+	 * @throws SQLException
+	 */
 	public int getCount() throws SQLException {
-		return this.jdbcTemplate.queryForObject("select count(1) from users", Integer.class);
+		return this.jdbcTemplate.queryForObject(
+				"select count(1) from users", Integer.class);
 	}
 }

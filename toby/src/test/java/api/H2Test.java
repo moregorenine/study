@@ -56,41 +56,41 @@ public class H2Test {
 		userDao.deleteAll();
 		cnt = userDao.getCount();
 		
-//		assertThat(cnt, is(0));
-//		
-//		userDao.add(user1);
-//		cnt = userDao.getCount();
-//		assertThat(cnt, is(1));
-//		
-//		userDao.add(user2);
-//		cnt = userDao.getCount();
-//		assertThat(cnt, is(2));
-//		
-//		userDao.add(user3);
-//		cnt = userDao.getCount();
-//		assertThat(cnt, is(3));
-//		
-//		dataSource = new SingleConnectionDataSource("jdbc:h2:~/test", "sa", null, true);
-//		assertNotNull(dataSource);
-//		
-//		userDao.setDataSource(dataSource);
-//		
-//		cnt = 0;
-//		userDao.deleteAll();
-//		cnt = userDao.getCount();
-//		
-//		assertThat(cnt, is(0));
-//		
-//		userDao.add(user1);
-//		cnt = userDao.getCount();
-//		assertThat(cnt, is(1));
-//		
-//		userDao.add(user2);
-//		cnt = userDao.getCount();
-//		assertThat(cnt, is(2));
-//		
-//		userDao.add(user3);
-//		cnt = userDao.getCount();
-//		assertThat(cnt, is(3));
+		assertThat(cnt, is(0));
+		
+		userDao.add(user1);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(1));
+		
+		userDao.add(user2);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(2));
+		
+		userDao.add(user3);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(3));
+		
+		dataSource = new SingleConnectionDataSource("jdbc:h2:~/test", "sa", null, true);
+		assertNotNull(dataSource);
+		
+		userDao.setDataSource(dataSource);
+		
+		cnt = 0;
+		userDao.deleteAll();
+		cnt = userDao.getCount();
+		
+		assertThat(cnt, is(0));
+		
+		userDao.add(user1);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(1));
+		
+		userDao.add(user2);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(2));
+		
+		userDao.add(user3);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(3));
 	}
 }

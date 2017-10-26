@@ -7,7 +7,9 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ import toby.domain.User;
 //@DirtiesContext //테스트 메소드애서 애플리케이션 컨텍스트의 구성이나 상태를 변경한다는 것을 테스트 컨텍스트 프레임워크에 알려준다.
 public class UserDaoTest {
 
+	@Rule
+	public final ExpectedException exception = ExpectedException.none();
+	
 	private static final Logger log = LoggerFactory.getLogger(UserDaoTest.class);
 	
 	@Autowired
@@ -89,11 +94,13 @@ public class UserDaoTest {
 		userDao.create();
 	}
 	
-	@Test(expected=EmptyResultDataAccessException.class)
+	@Test
 	public void getUserFailure() throws SQLException {
 		userDao.deleteAll();
 		assertThat(userDao.getCount(), is(0));
 		
+		exception.expect(EmptyResultDataAccessException.class);
 		userDao.get("unknown_id");
+		
 	}
 }
