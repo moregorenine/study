@@ -25,9 +25,6 @@ public class UserDaoTest {
 
 	private static final Logger log = LoggerFactory.getLogger(UserDaoTest.class);
 	
-//	@Autowired
-//	private ApplicationContext context;
-	
 	@Autowired
 	private UserDao userDao;
 	
@@ -37,9 +34,6 @@ public class UserDaoTest {
 	
 	@Before
 	public void before() throws SQLException {
-//		DataSource dataSource = new SingleConnectionDataSource("jdbc:h2:~/toby", "sa", null, true);
-//		userDao.setDataSource(dataSource);
-//		log.debug("context", this.context);
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
 		this.user1 = new User("userId1", "userName1", "pass1");
@@ -53,13 +47,6 @@ public class UserDaoTest {
 	
 	@Test
 	public void test() throws ClassNotFoundException, SQLException {
-//		@SuppressWarnings("resource")
-//		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-//		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
-		
-//		UserDao userDao = new DaoFactory().userDao();
-//		UserDao userDao = context.getBean("userDao", UserDao.class);
-		
 		User insertUser = new User();
 		insertUser.setId("moregorenine");
 		insertUser.setName("한진석");

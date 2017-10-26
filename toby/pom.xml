@@ -3,10 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>me.w4springrain</groupId>
 	<artifactId>toby</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>war</packaging>
 	
+	<name>toby</name>
+    <url>http://maven.apache.org</url>
+	
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<org.springframework.version>4.3.12.RELEASE</org.springframework.version>
 		<io.springfox.swagger.version>2.6.1</io.springfox.swagger.version>
 	</properties>
@@ -98,9 +102,10 @@
 				<!-- war, webapp 생성 -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.0</version>
 				<configuration>
 					<warSourceDirectory>webapp</warSourceDirectory>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
 

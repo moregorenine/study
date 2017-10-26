@@ -8,7 +8,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,15 +46,6 @@ public class H2Test {
 		this.user3 = new User("userId3", "userName3", "pass3");
 	}
 	
-	@After
-	public void after() throws SQLException {
-		log.debug("userDao : " + userDao);
-		log.debug("test object : " + this);
-		this.user1 = new User("userId1", "userName1", "pass1");
-		this.user2 = new User("userId2", "userName2", "pass2");
-		this.user3 = new User("userId3", "userName3", "pass3");
-	}
-	
 	@Test
 	public void h2Connection () throws SQLException {
 		DataSource dataSource = new SingleConnectionDataSource("jdbc:h2:~/toby", "sa", null, true);
@@ -66,41 +56,41 @@ public class H2Test {
 		userDao.deleteAll();
 		cnt = userDao.getCount();
 		
-		assertThat(cnt, is(0));
-		
-		userDao.add(user1);
-		cnt = userDao.getCount();
-		assertThat(cnt, is(1));
-		
-		userDao.add(user2);
-		cnt = userDao.getCount();
-		assertThat(cnt, is(2));
-		
-		userDao.add(user3);
-		cnt = userDao.getCount();
-		assertThat(cnt, is(3));
-		
-		dataSource = new SingleConnectionDataSource("jdbc:h2:~/test", "sa", null, true);
-		assertNotNull(dataSource);
-		
-		userDao.setDataSource(dataSource);
-		
-		cnt = 0;
-		userDao.deleteAll();
-		cnt = userDao.getCount();
-		
-		assertThat(cnt, is(0));
-		
-		userDao.add(user1);
-		cnt = userDao.getCount();
-		assertThat(cnt, is(1));
-		
-		userDao.add(user2);
-		cnt = userDao.getCount();
-		assertThat(cnt, is(2));
-		
-		userDao.add(user3);
-		cnt = userDao.getCount();
-		assertThat(cnt, is(3));
+//		assertThat(cnt, is(0));
+//		
+//		userDao.add(user1);
+//		cnt = userDao.getCount();
+//		assertThat(cnt, is(1));
+//		
+//		userDao.add(user2);
+//		cnt = userDao.getCount();
+//		assertThat(cnt, is(2));
+//		
+//		userDao.add(user3);
+//		cnt = userDao.getCount();
+//		assertThat(cnt, is(3));
+//		
+//		dataSource = new SingleConnectionDataSource("jdbc:h2:~/test", "sa", null, true);
+//		assertNotNull(dataSource);
+//		
+//		userDao.setDataSource(dataSource);
+//		
+//		cnt = 0;
+//		userDao.deleteAll();
+//		cnt = userDao.getCount();
+//		
+//		assertThat(cnt, is(0));
+//		
+//		userDao.add(user1);
+//		cnt = userDao.getCount();
+//		assertThat(cnt, is(1));
+//		
+//		userDao.add(user2);
+//		cnt = userDao.getCount();
+//		assertThat(cnt, is(2));
+//		
+//		userDao.add(user3);
+//		cnt = userDao.getCount();
+//		assertThat(cnt, is(3));
 	}
 }
