@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,7 +33,7 @@ public class UserDaoTest {
 	private static final Logger log = LoggerFactory.getLogger(UserDaoTest.class);
 	
 	@Autowired
-	private UserDao userDao;
+	private UserDaoH2 userDao;
 	
 	private User user1;
 	private User user2;
@@ -73,6 +74,21 @@ public class UserDaoTest {
 		assertThat(User1Test.getName(), is(user1.getName()));
 		assertThat(User1Test.getPassword(), is(user1.getPassword()));
 		
+	}
+	
+	@Test
+	public void addFailure() {
+		//add(User) 테스트
+		int cnt = 0;
+		userDao.deleteAll();
+		cnt = userDao.getCount();
+		assertThat(cnt, is(0));
+		userDao.add(user1);
+		cnt = userDao.getCount();
+		assertThat(cnt, is(1));
+		log.debug("DB Key 중복 테스트");
+		exception.expect(DuplicateKeyException.class);
+		userDao.add(user1);
 	}
 	
 	@Test

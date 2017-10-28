@@ -11,7 +11,7 @@
 		<property name="username" value="sa"/>
 	</bean>
 	
-	<bean id="userDao" class="toby.dao.user.UserDao">
+	<bean id="userDao" class="toby.dao.user.UserDaoH2">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	

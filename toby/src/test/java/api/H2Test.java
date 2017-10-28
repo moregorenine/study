@@ -19,7 +19,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import toby.dao.user.UserDao;
+import toby.dao.user.UserDaoH2;
 import toby.domain.User;
 
 
@@ -31,7 +31,7 @@ public class H2Test {
 	private static final Logger log = LoggerFactory.getLogger(H2Test.class);
 	
 	@Autowired
-	UserDao userDao;
+	UserDaoH2 userDao;
 	
 	private User user1;
 	private User user2;
