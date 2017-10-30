@@ -1,4 +1,4 @@
-package toby.dao.user;
+package toby.user.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +9,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import toby.domain.user.Level;
-import toby.domain.user.User;
+import toby.user.domain.Level;
+import toby.user.domain.User;
 
 /**
  * @author moregorenine

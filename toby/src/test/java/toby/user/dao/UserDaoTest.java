@@ -1,4 +1,4 @@
-package toby.dao.user;
+package toby.user.dao;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -20,8 +20,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import toby.domain.user.Level;
-import toby.domain.user.User;
+import toby.user.dao.UserDaoH2;
+import toby.user.domain.Level;
+import toby.user.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/test-applicationContext.xml")

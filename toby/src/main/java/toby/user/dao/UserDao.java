@@ -1,9 +1,9 @@
-package toby.dao.user;
+package toby.user.dao;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import toby.domain.user.User;
+import toby.user.domain.User;
 
 public interface UserDao {
 	/**

@@ -19,9 +19,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import toby.dao.user.UserDaoH2;
-import toby.domain.user.Level;
-import toby.domain.user.User;
+import toby.user.dao.UserDaoH2;
+import toby.user.domain.Level;
+import toby.user.domain.User;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
