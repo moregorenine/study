@@ -44,6 +44,23 @@ public class UserServiceTest {
 				);
 	}
 	
+	@Test
+	public void add() {
+		userDao.deleteAll();
+		
+		User userWithLevel = users.get(3);
+		User userWithoutLevel = users.get(0);
+		userWithoutLevel.setLevel(null);
+		
+		userServie.add(userWithLevel);
+		userServie.add(userWithoutLevel);
+		
+		User userWithLevelDB = userDao.get(userWithLevel.getId());
+		assertThat(userWithLevelDB.getLevel(), is(Level.SILVER));
+		User userWithoutLevelDB = userDao.get(userWithoutLevel.getId());
+		assertThat(userWithoutLevelDB.getLevel(), is(Level.BASIC));
+	}
+	
 	/**
 	 * USERS 테이블의 사용자 레벨 업그레이드
 	 */

@@ -14,6 +14,18 @@ public class UserService {
 	}
 	
 	/**
+	 * USERS 테이블에 user param insert
+	 * user의 level이 없을 경우 BASIC으로 초기화
+	 * @param user
+	 */
+	public void add(User user) {
+		if(user.getLevel() == null) {
+			user.setLevel(Level.BASIC);
+		}
+		userDao.add(user);
+	}
+	
+	/**
 	 * USERS 테이블의 사용자 레벨 업그레이드
 	 */
 	public void upgradeLevels() {
