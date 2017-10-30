@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import toby.dao.user.UserDaoH2;
+import toby.domain.Level;
 import toby.domain.User;
 
 
@@ -41,14 +42,14 @@ public class H2Test {
 	public void before() throws SQLException {
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
-		this.user1 = new User("userId1", "userName1", "pass1");
-		this.user2 = new User("userId2", "userName2", "pass2");
-		this.user3 = new User("userId3", "userName3", "pass3");
+		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0);
+		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, 55, 10);
+		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, 100, 40);
 	}
 	
 	@Test
 	public void h2Connection () throws SQLException {
-		DataSource dataSource = new SingleConnectionDataSource("jdbc:h2:~/toby", "sa", null, true);
+		DataSource dataSource = new SingleConnectionDataSource("jdbc:h2:~/test", "sa", null, true);
 		assertNotNull(dataSource);
 		userDao.setDataSource(dataSource);
 		

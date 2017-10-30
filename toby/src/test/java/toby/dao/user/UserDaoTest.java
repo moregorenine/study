@@ -20,6 +20,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import toby.domain.Level;
 import toby.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -41,11 +42,13 @@ public class UserDaoTest {
 	
 	@Before
 	public void before() {
+		userDao.drop();
+		userDao.create();
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
-		this.user1 = new User("userId1", "userName1", "pass1");
-		this.user2 = new User("userId2", "userName2", "pass2");
-		this.user3 = new User("userId3", "userName3", "pass3");
+		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0);
+		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, 55, 10);
+		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, 100, 40);
 	}
 	
 	@After
@@ -73,6 +76,9 @@ public class UserDaoTest {
 		assertThat(User1Test.getId(), is(user1.getId()));
 		assertThat(User1Test.getName(), is(user1.getName()));
 		assertThat(User1Test.getPassword(), is(user1.getPassword()));
+		assertThat(User1Test.getLevel(), is(user1.getLevel()));
+		assertThat(User1Test.getLogin(), is(user1.getLogin()));
+		assertThat(User1Test.getRecommend(), is(user1.getRecommend()));
 		
 	}
 	

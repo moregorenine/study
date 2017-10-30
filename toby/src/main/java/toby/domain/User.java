@@ -8,15 +8,22 @@ public class User {
 	String id;
 	String name;
 	String password;
-
+	Level level;
+	int login;
+	int recommend;
+	
 	public User() {
 		super();
 	}
 
-	public User(String id, String name, String password) {
+	public User(String id, String name, String password, Level level, int login
+			, int recommend) {
 		this.id = id;
 		this.name = name;
 		this.password = password;
+		this.level = level;
+		this.login = login;
+		this.recommend = recommend;
 	}
 
 	public String getId() {
@@ -42,6 +49,30 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public Level getLevel() {
+		return level;
+	}
+
+	public void setLevel(Level level) {
+		this.level = level;
+	}
+
+	public int getLogin() {
+		return login;
+	}
+
+	public void setLogin(int login) {
+		this.login = login;
+	}
+
+	public int getRecommend() {
+		return recommend;
+	}
+
+	public void setRecommend(int recommend) {
+		this.recommend = recommend;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -57,6 +88,10 @@ public class User {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (level != other.level)
+			return false;
+		if (login != other.login)
+			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -67,7 +102,10 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
+		if (recommend != other.recommend)
+			return false;
 		return true;
 	}
 
+	
 }

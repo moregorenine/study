@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import toby.domain.Level;
 import toby.domain.User;
 
 /**
@@ -31,8 +32,10 @@ public class UserDaoH2 {
 	 */
 	public void add(User user) {
 		this.jdbcTemplate.update(
-				"insert into users(id, name, password) values(?, ?, ?)"
-				, user.getId(), user.getName(), user.getPassword());
+				"insert into users(id, name, password, level, login, recommend)"
+				+ " values(?, ?, ?, ?, ?, ?)"
+				, user.getId(), user.getName(), user.getPassword()
+				, user.getLevel().intValue(), user.getLogin(), user.getRecommend());
 	}
 	
 	/**
@@ -42,9 +45,12 @@ public class UserDaoH2 {
 	public void create() {
 		this.jdbcTemplate.update(
 					"create table users("
-						+ " id		varchar(20) primary key,"
-						+ "	name	varchar(20) not null,"
-						+ "	password	varchar(10) not null"
+						+ " id			varchar(20) primary key"
+						+ ",name		varchar(20) not null"
+						+ ",password	varchar(10) not null"
+						+ ",level		int not null"
+						+ ",login		int not null"
+						+ ",recommend	int not null"
 						+ ")");
 	}
 	
@@ -104,6 +110,9 @@ public class UserDaoH2 {
 			user.setId(rs.getString("id"));
 			user.setName(rs.getString("name"));
 			user.setPassword(rs.getString("password"));
+			user.setLevel(Level.valueOf(rs.getInt("level")));
+			user.setLogin(rs.getInt("login"));
+			user.setRecommend(rs.getInt("recommend"));
 			return user;
 		}
 	};
