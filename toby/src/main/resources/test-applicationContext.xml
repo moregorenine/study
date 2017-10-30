@@ -12,7 +12,11 @@
 	</bean>
 	
 	<bean id="userDao" class="toby.user.dao.UserDaoH2">
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="userService" class="toby.user.service.UserService">
+		<property name="userDao" ref="userDao"/>
 	</bean>
 	
 </beans>

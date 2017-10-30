@@ -43,7 +43,7 @@ public interface UserDao {
 	 * USERS 테이블에서 모든 User정보 조회
 	 * @return
 	 */
-	public List<User> getAll();
+	List<User> getAll();
 	
 	/**
 	 * USER 테이블에 데이터 갯수 반환
@@ -52,4 +52,9 @@ public interface UserDao {
 	 */
 	int getCount();
 	
+	/**
+	 * USERS 테이블에서 User정보 update
+	 * @param user
+	 */
+	void update(User user);
 }

@@ -16,12 +16,11 @@ import toby.user.domain.User;
  * @author moregorenine
  *
  */
-public class UserDaoH2 {
+public class UserDaoH2 implements UserDao {
 	
 	private JdbcTemplate jdbcTemplate;
 
 	public void setDataSource(DataSource dataSource) {
-//		this.dataSource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(dataSource); 
 	}
 	
