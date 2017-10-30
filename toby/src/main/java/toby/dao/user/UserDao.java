@@ -3,7 +3,7 @@ package toby.dao.user;
 import java.sql.SQLException;
 import java.util.List;
 
-import toby.domain.User;
+import toby.domain.user.User;
 
 public interface UserDao {
 	/**

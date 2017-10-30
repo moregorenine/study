@@ -1,4 +1,4 @@
-package toby.domain;
+package toby.domain.user;
 
 public enum Level {
 	BASIC(1), SILVER(2), GOLD(3);

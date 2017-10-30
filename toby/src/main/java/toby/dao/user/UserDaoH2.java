@@ -9,8 +9,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import toby.domain.Level;
-import toby.domain.User;
+import toby.domain.user.Level;
+import toby.domain.user.User;
 
 /**
  * @author moregorenine
@@ -116,5 +116,12 @@ public class UserDaoH2 {
 			return user;
 		}
 	};
+
+	public void update(User user) {
+		this.jdbcTemplate.update("update users set name = ?, password=?"
+				+ ", level=?, login=?, recommend=? where id = ?"
+				, user.getName(), user.getPassword(), user.getLevel().intValue()
+				, user.getLogin(), user.getRecommend(), user.getId());
+	}
 		
 }

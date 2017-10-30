@@ -20,8 +20,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import toby.domain.Level;
-import toby.domain.User;
+import toby.domain.user.Level;
+import toby.domain.user.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/test-applicationContext.xml")
@@ -131,5 +131,29 @@ public class UserDaoTest {
 		assertTrue(user2.equals(users.get(1)));
 		assertTrue(user3.equals(users.get(2)));
 		
+	}
+	
+	/**
+	 * USERS 테이블에서 User정보 update
+	 */
+	@Test
+	public void update() {
+		userDao.deleteAll();
+		userDao.add(user1);
+		userDao.add(user2);
+		
+		user1.setName("nameUpdate");
+		user1.setPassword("pass4");
+		user1.setLevel(Level.GOLD);
+		user1.setLogin(789);
+		user1.setRecommend(987);
+		
+		userDao.update(user1);
+		
+		User user1Update = userDao.get(user1.getId());
+		assertThat(user1Update, is(user1));
+		log.debug("user2's id : " + user2.getId());
+		User user2Same = userDao.get(user2.getId());
+		assertThat(user2Same, is(user2));
 	}
 }

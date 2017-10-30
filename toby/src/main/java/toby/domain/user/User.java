@@ -1,4 +1,4 @@
-package toby.domain;
+package toby.domain.user;
 
 /**
  * @author moregorenine
