@@ -3,6 +3,8 @@ package toby.user.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static toby.user.service.UserService.MIN_LOGINCOUNT_FOR_SILVER;
+import static toby.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
 
 import java.util.List;
 
@@ -20,7 +22,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import toby.user.dao.UserDaoH2;
 import toby.user.domain.Level;
 import toby.user.domain.User;
 
@@ -48,8 +49,8 @@ public class UserDaoTest {
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
 		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0);
-		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, 55, 10);
-		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, 100, 40);
+		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1);
+		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 	
 	@After

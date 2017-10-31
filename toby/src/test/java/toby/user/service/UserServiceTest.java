@@ -19,6 +19,9 @@ import toby.user.dao.UserDao;
 import toby.user.domain.Level;
 import toby.user.domain.User;
 
+import static toby.user.service.UserService.MIN_LOGINCOUNT_FOR_SILVER;
+import static toby.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/test-applicationContext.xml")
 public class UserServiceTest {
@@ -26,7 +29,7 @@ public class UserServiceTest {
 	private static final Logger log = LoggerFactory.getLogger(UserServiceTest.class);
 	
 	@Autowired
-	UserService userServie;
+	UserService userService;
 	
 	@Autowired
 	UserDao userDao;
@@ -36,11 +39,11 @@ public class UserServiceTest {
 	@Before
 	public void before() {
 		users = Arrays.asList(
-				new User("userId1", "userName1", "pass1", Level.BASIC, 49, 0),
-				new User("userId2", "userName2", "pass2", Level.BASIC, 50, 0),
-				new User("userId3", "userName3", "pass3", Level.SILVER, 60, 29),
-				new User("userId4", "userName4", "pass4", Level.SILVER, 60, 30),
-				new User("userId5", "userName5", "pass5", Level.GOLD, 100, 100)
+				new User("userId1", "userName1", "pass1", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER-1, 0),
+				new User("userId2", "userName2", "pass2", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER, 0),
+				new User("userId3", "userName3", "pass3", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1),
+				new User("userId4", "userName4", "pass4", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD),
+				new User("userId5", "userName5", "pass5", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE)
 				);
 	}
 	
@@ -52,8 +55,8 @@ public class UserServiceTest {
 		User userWithoutLevel = users.get(0);
 		userWithoutLevel.setLevel(null);
 		
-		userServie.add(userWithLevel);
-		userServie.add(userWithoutLevel);
+		userService.add(userWithLevel);
+		userService.add(userWithoutLevel);
 		
 		User userWithLevelDB = userDao.get(userWithLevel.getId());
 		assertThat(userWithLevelDB.getLevel(), is(Level.SILVER));
@@ -71,7 +74,7 @@ public class UserServiceTest {
 			userDao.add(user);
 		}
 		
-		userServie.upgradeLevels();
+		userService.upgradeLevels();
 		List<User> updatedUsers = userDao.getAll();
 		log.debug("updatedUsers.get(0).getLevel() : " + updatedUsers.get(0).getLevel());
 		assertThat(updatedUsers.get(0).getLevel(), is(Level.BASIC));
