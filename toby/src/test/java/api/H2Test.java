@@ -42,9 +42,9 @@ public class H2Test {
 	public void before() throws SQLException {
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
-		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0);
-		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, 55, 10);
-		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, 100, 40);
+		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0, "userId1@dood.net");
+		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, 55, 10, "userId1@dood.net");
+		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, 100, 40, "userId1@dood.net");
 	}
 	
 	@Test

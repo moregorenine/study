@@ -31,10 +31,10 @@ public class UserDaoH2 implements UserDao {
 	 */
 	public void add(User user) {
 		this.jdbcTemplate.update(
-				"insert into users(id, name, password, level, login, recommend)"
-				+ " values(?, ?, ?, ?, ?, ?)"
+				"insert into users(id, name, password, level, login, recommend, email)"
+				+ " values(?, ?, ?, ?, ?, ?, ?)"
 				, user.getId(), user.getName(), user.getPassword()
-				, user.getLevel().intValue(), user.getLogin(), user.getRecommend());
+				, user.getLevel().intValue(), user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 	
 	/**
@@ -50,6 +50,7 @@ public class UserDaoH2 implements UserDao {
 						+ ",level		int not null"
 						+ ",login		int not null"
 						+ ",recommend	int not null"
+						+ ",email		varchar(20)"
 						+ ")");
 	}
 	
@@ -112,15 +113,16 @@ public class UserDaoH2 implements UserDao {
 			user.setLevel(Level.valueOf(rs.getInt("level")));
 			user.setLogin(rs.getInt("login"));
 			user.setRecommend(rs.getInt("recommend"));
+			user.setEmail(rs.getString("email"));
 			return user;
 		}
 	};
 
 	public void update(User user) {
-		this.jdbcTemplate.update("update users set name = ?, password=?"
-				+ ", level=?, login=?, recommend=? where id = ?"
+		this.jdbcTemplate.update("update users set name = ?, password= ?"
+				+ ", level = ?, login = ?, recommend = ?, email = ? where id = ?"
 				, user.getName(), user.getPassword(), user.getLevel().intValue()
-				, user.getLogin(), user.getRecommend(), user.getId());
+				, user.getLogin(), user.getRecommend(), user.getEmail(), user.getId());
 	}
 		
 }

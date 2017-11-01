@@ -2,6 +2,7 @@ package toby.user.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import toby.user.dao.UserDao;
 import toby.user.domain.Level;
@@ -32,6 +34,9 @@ public class UserServiceTest {
 	UserService userService;
 	
 	@Autowired
+	PlatformTransactionManager transactionManager;
+	
+	@Autowired
 	UserDao userDao;
 	
 	private List<User> users; 
@@ -39,11 +44,11 @@ public class UserServiceTest {
 	@Before
 	public void before() {
 		users = Arrays.asList(
-				new User("userId1", "userName1", "pass1", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER-1, 0),
-				new User("userId2", "userName2", "pass2", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER, 0),
-				new User("userId3", "userName3", "pass3", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1),
-				new User("userId4", "userName4", "pass4", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD),
-				new User("userId5", "userName5", "pass5", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE)
+				new User("userId1", "userName1", "pass1", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER-1, 0, "userId1@dood.net"),
+				new User("userId2", "userName2", "pass2", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER, 0, "userId2@dood.net"),
+				new User("userId3", "userName3", "pass3", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1, "userId3@dood.net"),
+				new User("userId4", "userName4", "pass4", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD, "userId4@dood.net"),
+				new User("userId5", "userName5", "pass5", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE, "userId5@dood.net")
 				);
 	}
 	
@@ -84,4 +89,47 @@ public class UserServiceTest {
 		assertThat(updatedUsers.get(4).getLevel(), is(Level.GOLD));
 	}
 
+	static class TestUserServiceExeption extends RuntimeException {
+	}
+	
+	static class TestUserService extends UserService {
+
+		private String id;
+		
+		private TestUserService(String id) {
+			this.id = id;
+		}
+		
+		private List<User> users;
+		
+		@Override
+		protected void upgradeLevel(User user) {
+			if(user.getId().equals(this.id)){
+				throw new TestUserServiceExeption();
+			}
+			super.upgradeLevel(user);
+		}
+	}
+	
+	@Test
+	public void upgradeAllOrNothing() {
+		UserService testUserService = new TestUserService(users.get(3).getId());
+		testUserService.setUserDao(this.userDao);
+		testUserService.setTransactionManager(transactionManager);
+		userDao.deleteAll();
+		for(User user : users){
+			userDao.add(user);
+		}
+		
+		try {
+			testUserService.upgradeLevels();
+			fail("TestUserServiceException expected");
+		} catch (Exception e) {
+		}
+		
+		User userUpgraded = userDao.get(users.get(1).getId()); 
+		log.debug(""+users.get(1).getLevel());
+		log.debug(""+userUpgraded.getLevel());
+		assertThat(userUpgraded.getLevel(), is(users.get(1).getLevel()));
+	}
 }

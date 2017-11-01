@@ -48,9 +48,9 @@ public class UserDaoTest {
 		userDao.create();
 		log.debug("userDao : " + userDao);
 		log.debug("test object : " + this);
-		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0);
-		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1);
-		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE);
+		this.user1 = new User("userId1", "userName1", "pass1", Level.BASIC, 1, 0, "userId1@dood.net");
+		this.user2 = new User("userId2", "userName2", "pass2", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1, "userId2@dood.net");
+		this.user3 = new User("userId3", "userName3", "pass3", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE, "userId3@dood.net");
 	}
 	
 	@After
@@ -153,7 +153,7 @@ public class UserDaoTest {
 		userDao.update(user1);
 		
 		User user1Update = userDao.get(user1.getId());
-		assertThat(user1Update, is(user1));
+		assertThat(user1Update.equals(user1), is(true));
 		log.debug("user2's id : " + user2.getId());
 		User user2Same = userDao.get(user2.getId());
 		assertThat(user2Same, is(user2));

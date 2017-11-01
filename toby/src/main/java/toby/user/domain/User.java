@@ -11,19 +11,21 @@ public class User {
 	Level level;
 	int login;
 	int recommend;
+	String email;
 	
 	public User() {
 		super();
 	}
 
 	public User(String id, String name, String password, Level level, int login
-			, int recommend) {
+			, int recommend, String email) {
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.level = level;
 		this.login = login;
 		this.recommend = recommend;
+		this.email = email;
 	}
 
 	public String getId() {
@@ -74,6 +76,14 @@ public class User {
 		this.recommend = recommend;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -83,6 +93,11 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
