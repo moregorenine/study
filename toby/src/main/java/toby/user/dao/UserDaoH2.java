@@ -50,7 +50,7 @@ public class UserDaoH2 implements UserDao {
 						+ ",level		int not null"
 						+ ",login		int not null"
 						+ ",recommend	int not null"
-						+ ",email		varchar(20)"
+						+ ",email		varchar(50)"
 						+ ")");
 	}
 	

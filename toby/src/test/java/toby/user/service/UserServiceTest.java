@@ -3,7 +3,10 @@ package toby.user.service;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static toby.user.service.UserService.MIN_LOGINCOUNT_FOR_SILVER;
+import static toby.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,16 +16,17 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import toby.mail.MailSender;
 import toby.user.dao.UserDao;
 import toby.user.domain.Level;
 import toby.user.domain.User;
-
-import static toby.user.service.UserService.MIN_LOGINCOUNT_FOR_SILVER;
-import static toby.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/test-applicationContext.xml")
@@ -39,15 +43,18 @@ public class UserServiceTest {
 	@Autowired
 	UserDao userDao;
 	
+	@Autowired
+	MailSender mailSender;
+	
 	private List<User> users; 
 	
 	@Before
 	public void before() {
 		users = Arrays.asList(
 				new User("userId1", "userName1", "pass1", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER-1, 0, "userId1@dood.net"),
-				new User("userId2", "userName2", "pass2", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER, 0, "userId2@dood.net"),
+				new User("userId2", "userName2", "pass2", Level.BASIC, MIN_LOGINCOUNT_FOR_SILVER, 0, "moregorenine@naver.com"),
 				new User("userId3", "userName3", "pass3", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD-1, "userId3@dood.net"),
-				new User("userId4", "userName4", "pass4", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD, "userId4@dood.net"),
+				new User("userId4", "userName4", "pass4", Level.SILVER, MIN_LOGINCOUNT_FOR_SILVER+1, MIN_RECOMMEND_FOR_GOLD, "moregorenine@naver.com"),
 				new User("userId5", "userName5", "pass5", Level.GOLD, Integer.MAX_VALUE, Integer.MAX_VALUE, "userId5@dood.net")
 				);
 	}
@@ -73,25 +80,45 @@ public class UserServiceTest {
 	 * USERS 테이블의 사용자 레벨 업그레이드
 	 */
 	@Test
+	@DirtiesContext
 	public void upgradeLevels() {
 		userDao.deleteAll();
 		for(User user : users) {
 			userDao.add(user);
 		}
 		
+		MockMailSender mockMailSender = new MockMailSender();
+		userService.setMailSender(mockMailSender);
+		
 		userService.upgradeLevels();
 		List<User> updatedUsers = userDao.getAll();
 		log.debug("updatedUsers.get(0).getLevel() : " + updatedUsers.get(0).getLevel());
-		assertThat(updatedUsers.get(0).getLevel(), is(Level.BASIC));
-		assertThat(updatedUsers.get(1).getLevel(), is(Level.SILVER));
-		assertThat(updatedUsers.get(2).getLevel(), is(Level.SILVER));
-		assertThat(updatedUsers.get(3).getLevel(), is(Level.GOLD));
-		assertThat(updatedUsers.get(4).getLevel(), is(Level.GOLD));
+		this.checkLevelUpgraded(users.get(0), false);
+		this.checkLevelUpgraded(users.get(1), true);
+		this.checkLevelUpgraded(users.get(2), false);
+		this.checkLevelUpgraded(users.get(3), true);
+		this.checkLevelUpgraded(users.get(4), false);
+		
+		List<String> request = mockMailSender.getRequests();
+		assertThat(request.size(), is(2));
+		assertThat(request.get(0), is(users.get(1).getEmail()));
+		assertThat(request.get(1), is(users.get(3).getEmail()));
 	}
 
+	/**
+	 * upgradeLevel Exception 발생 테스트
+	 * @author moregorenine
+	 *
+	 */
+	@SuppressWarnings("serial")
 	static class TestUserServiceExeption extends RuntimeException {
 	}
 	
+	/**
+	 * upgradeLevel Exception 발생 테스트
+	 * @author moregorenine
+	 *
+	 */
 	static class TestUserService extends UserService {
 
 		private String id;
@@ -99,8 +126,6 @@ public class UserServiceTest {
 		private TestUserService(String id) {
 			this.id = id;
 		}
-		
-		private List<User> users;
 		
 		@Override
 		protected void upgradeLevel(User user) {
@@ -111,6 +136,32 @@ public class UserServiceTest {
 		}
 	}
 	
+	/**
+	 * MailSender Mock 테스트용
+	 * @author moregorenine
+	 *
+	 */
+	static class MockMailSender implements MailSender {
+		private List<String> requests = new ArrayList<String>();
+		
+		public List<String> getRequests() {
+			return requests;
+		}
+		
+		@Override
+		public void send(SimpleMailMessage simpleMessage) throws MailException {
+			requests.add(simpleMessage.getTo()[0]);
+		}
+
+		@Override
+		public void send(SimpleMailMessage[] simpleMessages) throws MailException {
+		}
+		
+	}
+	
+	/**
+	 * transaction 테스트
+	 */
 	@Test
 	public void upgradeAllOrNothing() {
 		UserService testUserService = new TestUserService(users.get(3).getId());
@@ -127,9 +178,20 @@ public class UserServiceTest {
 		} catch (Exception e) {
 		}
 		
-		User userUpgraded = userDao.get(users.get(1).getId()); 
-		log.debug(""+users.get(1).getLevel());
-		log.debug(""+userUpgraded.getLevel());
-		assertThat(userUpgraded.getLevel(), is(users.get(1).getLevel()));
+		checkLevelUpgraded(users.get(0), false);
+		checkLevelUpgraded(users.get(1), false);
+		checkLevelUpgraded(users.get(2), false);
+		checkLevelUpgraded(users.get(3), false);
+		checkLevelUpgraded(users.get(4), false);
+	}
+	
+	private void checkLevelUpgraded(User user, boolean upgraded) {
+		User userUpdate = userDao.get(user.getId());
+		
+		if(upgraded){
+			assertThat(userUpdate.getLevel(), is(user.getLevel().nextLevel()));
+		} else {
+			assertThat(userUpdate.getLevel(), is(user.getLevel()));
+		}
 	}
 }
