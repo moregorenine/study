@@ -3,8 +3,8 @@ package toby.user.dao;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static toby.user.service.UserService.MIN_LOGINCOUNT_FOR_SILVER;
-import static toby.user.service.UserService.MIN_RECOMMEND_FOR_GOLD;
+import static toby.user.service.UserServiceImpl.MIN_LOGINCOUNT_FOR_SILVER;
+import static toby.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
 import java.util.List;
 
