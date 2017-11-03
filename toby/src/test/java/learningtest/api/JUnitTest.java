@@ -1,4 +1,4 @@
-package api;
+package learningtest.api;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;

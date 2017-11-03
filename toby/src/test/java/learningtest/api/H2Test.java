@@ -1,4 +1,4 @@
-package api;
+package learningtest.api;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;

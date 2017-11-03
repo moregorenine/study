@@ -3,9 +3,11 @@ package toby.user.service;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.*;
 import static toby.user.service.UserServiceImpl.MIN_LOGINCOUNT_FOR_SILVER;
 import static toby.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
