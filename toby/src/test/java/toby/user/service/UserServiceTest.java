@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import static toby.user.service.UserServiceImpl.MIN_LOGINCOUNT_FOR_SILVER;
 import static toby.user.service.UserServiceImpl.MIN_RECOMMEND_FOR_GOLD;
 
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -225,6 +226,27 @@ public class UserServiceTest {
 		checkLevelUpgraded(users.get(2), false);
 		checkLevelUpgraded(users.get(3), false);
 		checkLevelUpgraded(users.get(4), false);
+		
+		userDao.deleteAll();
+//		userDao.add(users.get(0));
+		userDao.add(users.get(1));
+//		userDao.add(users.get(2));
+		userDao.add(users.get(3));
+//		userDao.add(users.get(4));
+		
+		TransactionHandler transactionHandler = new TransactionHandler();
+		transactionHandler.setTarget(userService);
+		transactionHandler.setTransactionManager(transactionManager);
+		transactionHandler.setPattern("upgradeLevels");
+		UserService txUserService = (UserService) Proxy.newProxyInstance(
+				getClass().getClassLoader()
+				, new Class[]{UserService.class}
+				, transactionHandler);
+		
+		txUserService.upgradeLevels();
+		
+		checkLevelUpgraded(users.get(1), true);
+		checkLevelUpgraded(users.get(3), true);
 	}
 	
 	private void checkLevelUpgraded(User user, boolean upgraded) {
