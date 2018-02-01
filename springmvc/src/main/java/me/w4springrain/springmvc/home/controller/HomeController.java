@@ -1,4 +1,4 @@
-package me.w4springrain.springmvc;
+package me.w4springrain.springmvc.home.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
