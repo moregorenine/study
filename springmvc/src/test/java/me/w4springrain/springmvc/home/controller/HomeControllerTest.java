@@ -20,16 +20,15 @@ public class HomeControllerTest extends AbstractDispatcherServlet {
 	private static final Logger logger = LoggerFactory.getLogger(HomeControllerTest.class);
 	
 	@Test
-	public void test() throws ServletException, IOException {
+	public void home() throws ServletException, IOException {
 		ModelAndView mav = setConfig("/spring/appServlet/servlet-context.xml")
 				.setClasses(HomeController.class)
-				.initRequest("/", RequestMethod.GET)
+				.initRequest("/home/main.do", RequestMethod.GET)
 				.addParameter("name", "Spring")
 				.runService()
 				.getModelAndView();
 		logger.info("mav is {}.", mav);
 		assertThat(mav.getViewName(), is("home"));
-//		assertThat((String)mav.getModel().get("message"), is("Hello Spring"));
 	}
 
 }
