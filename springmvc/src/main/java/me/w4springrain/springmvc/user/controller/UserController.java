@@ -21,7 +21,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/{userId}", method = RequestMethod.POST)
 	public String createUser(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+		logger.debug("createUser() Start");
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -29,7 +29,7 @@ public class UserController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		
+		logger.debug("createUser() End");
 		return "home";
 	}
 	
@@ -44,7 +44,7 @@ public class UserController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
+		return "user/users";
 	}
 	
 	@RequestMapping(value = "/{userId}", method = RequestMethod.GET)

@@ -9,5 +9,5 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:property-placeholder location="classpath:properties/config-${spring.profiles.active}.properties"/>
-		
+	
 </beans>
