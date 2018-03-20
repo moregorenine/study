@@ -6,7 +6,19 @@
 </head>
 <body>
 	<h1>Hi Users!</h1>
-
-	<P>The time on the server is ${serverTime}.</P>
+	<table>
+	<tr><td>1</td></tr>
+	<tr><td>2</td></tr>
+		<c:forEach var="user" items="${users}" varStatus="status">
+			<tr>
+				<td>${user.userId}</td>
+			</tr>
+		</c:forEach>
+	</table>
+	<form action="users" method="post">
+		<div class="button">
+			<button type="submit">create user</button>
+		</div>
+	</form>
 </body>
 </html>

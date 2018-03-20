@@ -17,8 +17,12 @@
 
 <mapper namespace="me.w4springrain.springmvc.user.dao">
 
-  <select id="createUser" parameterType="String">
-    INSERT INTO W4_USER VALUES(#{userId});
+  <insert id="createUser" parameterType="String">
+	INSERT INTO W4_USER VALUES(#{userId});
+  </insert>
+  
+  <select id="selectUsers" resultType="me.w4springrain.springmvc.user.vo.User">
+    SELECT * FROM W4_USER;
   </select>
 
 </mapper>
