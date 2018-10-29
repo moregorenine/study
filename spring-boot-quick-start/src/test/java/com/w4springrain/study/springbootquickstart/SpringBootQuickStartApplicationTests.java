@@ -1,4 +1,4 @@
-package com.w4springrain.springbootquickstart;
+package com.w4springrain.study.springbootquickstart;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
