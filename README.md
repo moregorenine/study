@@ -9,7 +9,7 @@
 스터디를 진행하면서 정리한 내용은 저의 github pages [Link](https://moregorenine.github.io)에서 보실 수 있습니다.
 
 ## core-java
-Java 8(32bit를 지원하는 마지막 버젼이기도 하죠.)에 새롭게 도입된 람다  
+- Java 8(32bit를 지원하는 마지막 버젼)에 새롭게 도입된 람다  
 
 ## spring-boot-quick-start
 Spring Boot Quick Start - Java Brains 강좌  
