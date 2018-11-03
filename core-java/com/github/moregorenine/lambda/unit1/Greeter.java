@@ -1,8 +1,10 @@
-package com.github.moregorenine.lambda;
+package com.github.moregorenine.lambda.unit1;
 
 public class Greeter {
 
 	public static void main(String[] args) {
+		/*interface를 구현하는 람다*/
+//		MyLambda interface를 별도의 구현하는 class생성할 필요 없이 inline 선언으로 대체 가능
 		MyLambda myLambda = () -> System.out.println("Hello World!!");
 		myLambda.foo();
 
