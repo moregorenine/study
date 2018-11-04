@@ -2,6 +2,7 @@
 - [Intro](#intro)
 - [core-java](#core-java)  
 - [spring-boot-quick-start](#spring-boot-quick-start)  
+- [spring-data-jpa](#spring-data-jpa)  
 
 ## Intro
 관심있는 주제에 관해 스터디를 진행하면서 실행한 예제코드를 업로드하고 있습니다.  
@@ -15,3 +16,6 @@
 아주 심플한 스프링 부트 시작 연습을 위한 프로젝트 입니다.  
 - Spring Boot 프로젝트 초기 생성
 - REST API 방식의 MVC 처리
+
+## spring-data-jpa
+spring boot web, JPA, apache derby 를 이용한 JPA 학습 프로젝트 입니다.  
