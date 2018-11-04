@@ -12,5 +12,6 @@
 - Java 8(32bit를 지원하는 마지막 버젼)에 새롭게 도입된 람다  
 
 ## spring-boot-quick-start
-Spring Boot Quick Start - Java Brains 강좌  
-- Spring Boot Maven 초기 설정  
+아주 심플한 스프링 부트 시작 연습을 위한 프로젝트 입니다.  
+- Spring Boot 프로젝트 초기 생성
+- REST API 방식의 MVC 처리
