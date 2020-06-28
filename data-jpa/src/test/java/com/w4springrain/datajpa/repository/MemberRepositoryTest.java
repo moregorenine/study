@@ -7,6 +7,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,7 +100,7 @@ class MemberRepositoryTest {
         memberRepository.save(m1);
         memberRepository.save(m2);
         List<String> usernameList = memberRepository.findUsernameList();
-        for(String s : usernameList) {
+        for (String s : usernameList) {
             System.out.println("s = " + s);
         }
     }
@@ -105,7 +109,7 @@ class MemberRepositoryTest {
     void findMemberDto() {
         Team team = new Team("teamA");
         teamRepository.save(team);
-        
+
         Member m1 = new Member("AAA", 10);
         m1.setTeam(team);
         memberRepository.save(m1);
@@ -128,6 +132,99 @@ class MemberRepositoryTest {
         for (Member memberName : memberNames) {
             System.out.println("memberName = " + memberName);
         }
-        
+
     }
+
+    @Test
+    public void paging() {
+        // given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+        memberRepository.save(new Member("member6", 10));
+        memberRepository.save(new Member("member7", 10));
+        memberRepository.save(new Member("member8", 10));
+        memberRepository.save(new Member("member9", 10));
+        memberRepository.save(new Member("member10", 10));
+        memberRepository.save(new Member("member11", 10));
+        memberRepository.save(new Member("member12", 10));
+        memberRepository.save(new Member("member13", 10));
+        memberRepository.save(new Member("member14", 10));
+        memberRepository.save(new Member("member15", 10));
+        memberRepository.save(new Member("member16", 10));
+        memberRepository.save(new Member("member17", 10));
+        memberRepository.save(new Member("member18", 10));
+        memberRepository.save(new Member("member19", 10));
+        memberRepository.save(new Member("member20", 10));
+
+        //when
+        int age = 10;
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+        Page<MemberDto> toMap = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
+
+        List<Member> content = page.getContent();
+        long totalElements = page.getTotalElements();
+
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+        System.out.println("totalElements = " + totalElements);
+
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(totalElements).isEqualTo(20);
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(7);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
+    }
+
+    @Test
+    public void slice() {
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 10));
+        memberRepository.save(new Member("member3", 10));
+        memberRepository.save(new Member("member4", 10));
+        memberRepository.save(new Member("member5", 10));
+        memberRepository.save(new Member("member6", 10));
+        memberRepository.save(new Member("member7", 10));
+        memberRepository.save(new Member("member8", 10));
+        memberRepository.save(new Member("member9", 10));
+        memberRepository.save(new Member("member10", 10));
+        memberRepository.save(new Member("member11", 10));
+        memberRepository.save(new Member("member12", 10));
+        memberRepository.save(new Member("member13", 10));
+        memberRepository.save(new Member("member14", 10));
+        memberRepository.save(new Member("member15", 10));
+        memberRepository.save(new Member("member16", 10));
+        memberRepository.save(new Member("member17", 10));
+        memberRepository.save(new Member("member18", 10));
+        memberRepository.save(new Member("member19", 10));
+        memberRepository.save(new Member("member20", 10));
+
+        int age = 10;
+        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+
+        Slice<Member> page = memberRepository.findSliceByAge(age, pageRequest);
+
+        List<Member> content = page.getContent();
+//        long totalElements = page.getTotalElements();
+
+        for (Member member : content) {
+            System.out.println("member = " + member);
+        }
+//        System.out.println("totalElements = " + totalElements);
+
+        assertThat(content.size()).isEqualTo(3);
+//        assertThat(totalElements).isEqualTo(20);
+        assertThat(page.getNumber()).isEqualTo(0);
+//        assertThat(page.getTotalPages()).isEqualTo(7);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
+    }
+
 }
