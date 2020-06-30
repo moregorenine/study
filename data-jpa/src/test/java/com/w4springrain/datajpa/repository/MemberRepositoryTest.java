@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +32,11 @@ class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager em;
+
+
 
     @Test
     public void testMember() {
@@ -225,6 +232,46 @@ class MemberRepositoryTest {
 //        assertThat(page.getTotalPages()).isEqualTo(7);
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
+    }
+
+    @Test
+    public void bulkAgePlus() {
+        //given
+        memberRepository.save(new Member("member1", 1));
+        memberRepository.save(new Member("member2", 2));
+        memberRepository.save(new Member("member3", 3));
+        memberRepository.save(new Member("member4", 4));
+        memberRepository.save(new Member("member5", 5));
+        memberRepository.save(new Member("member6", 6));
+        memberRepository.save(new Member("member7", 7));
+        memberRepository.save(new Member("member8", 8));
+        memberRepository.save(new Member("member9", 9));
+        memberRepository.save(new Member("member10", 10));
+        memberRepository.save(new Member("member11", 11));
+        memberRepository.save(new Member("member12", 12));
+        memberRepository.save(new Member("member13", 13));
+        memberRepository.save(new Member("member14", 14));
+        memberRepository.save(new Member("member15", 15));
+        memberRepository.save(new Member("member16", 16));
+        memberRepository.save(new Member("member17", 17));
+        memberRepository.save(new Member("member18", 18));
+        memberRepository.save(new Member("member19", 19));
+        memberRepository.save(new Member("member20", 20));
+
+
+        //when
+//        em.flush(); JPQL 실행전에 내부적으로 자동으로 em.flush 실행한다.
+        int resultCount = memberRepository.bulkAgePlus(10);
+//        em.clear(); 영속성을 clear 해버린다.
+
+        List<Member> memberList = memberRepository.findAll();
+
+        //then
+        assertThat(resultCount).isEqualTo(11);
+        assertThat(memberList.get(0).getAge()).isEqualTo(1);
+        assertThat(memberList.get(8).getAge()).isEqualTo(9);
+        assertThat(memberList.get(9).getAge()).isEqualTo(11);
+        assertThat(memberList.get(19).getAge()).isEqualTo(21);
     }
 
 }

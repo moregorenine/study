@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.lang.model.SourceVersion;
+import java.sql.SQLOutput;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -101,5 +103,36 @@ class MemberJpaRepositoryTest {
 
         assertThat(members.size()).isEqualTo(3);
         assertThat(totalCount).isEqualTo(20);
+    }
+
+    @Test
+    public void bulkAgePlus() {
+        //given
+        memberJpaRepository.save(new Member("member1", 1));
+        memberJpaRepository.save(new Member("member2", 2));
+        memberJpaRepository.save(new Member("member3", 3));
+        memberJpaRepository.save(new Member("member4", 4));
+        memberJpaRepository.save(new Member("member5", 5));
+        memberJpaRepository.save(new Member("member6", 6));
+        memberJpaRepository.save(new Member("member7", 7));
+        memberJpaRepository.save(new Member("member8", 8));
+        memberJpaRepository.save(new Member("member9", 9));
+        memberJpaRepository.save(new Member("member10", 10));
+        memberJpaRepository.save(new Member("member11", 11));
+        memberJpaRepository.save(new Member("member12", 12));
+        memberJpaRepository.save(new Member("member13", 13));
+        memberJpaRepository.save(new Member("member14", 14));
+        memberJpaRepository.save(new Member("member15", 15));
+        memberJpaRepository.save(new Member("member16", 16));
+        memberJpaRepository.save(new Member("member17", 17));
+        memberJpaRepository.save(new Member("member18", 18));
+        memberJpaRepository.save(new Member("member19", 19));
+        memberJpaRepository.save(new Member("member20", 20));
+
+        //when
+        int resultCount = memberJpaRepository.bulkAgePlus(10);
+
+        //then
+        assertThat(resultCount).isEqualTo(11);
     }
 }
