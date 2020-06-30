@@ -260,9 +260,9 @@ class MemberRepositoryTest {
 
 
         //when
-//        em.flush(); JPQL 실행전에 내부적으로 자동으로 em.flush 실행한다.
+        //em.flush(); JPQL 실행전에 내부적으로 자동으로 em.flush 실행한다.
         int resultCount = memberRepository.bulkAgePlus(10);
-//        em.clear(); 영속성을 clear 해버린다.
+        //em.clear(); 영속성을 clear 해버린다.
 
         List<Member> memberList = memberRepository.findAll();
 
@@ -274,4 +274,35 @@ class MemberRepositoryTest {
         assertThat(memberList.get(19).getAge()).isEqualTo(21);
     }
 
+    @Test
+    public void findMemberLazy() {
+        //given
+        //member1 -> teamA
+        //member2 -> teamB
+
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member member1 = new Member("member1", 1, teamA);
+        Member member2 = new Member("member2", 2, teamB);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        em.flush();
+        em.clear();
+
+        //when 1 + N
+//        List<Member> memberList = memberRepository.findAll();
+//        List<Member> memberList = memberRepository.findMemberFetchJoin();
+        List<Member> memberList = memberRepository.findAll();
+
+        for (Member member : memberList) {
+            System.out.println("member.getUsername() = " + member.getUsername());
+            System.out.println("member.teamClass = " + member.getTeam().getClass());
+            System.out.println("member.team = " + member.getTeam().getName());
+        }
+
+    }
 }
