@@ -25,7 +25,6 @@ import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class MemberRepositoryTest {
 
     @Autowired
