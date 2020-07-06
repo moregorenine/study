@@ -25,7 +25,6 @@ import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 class MemberRepositoryTest {
 
     @Autowired
@@ -328,5 +327,10 @@ class MemberRepositoryTest {
 
         //when
         List<Member> result = memberRepository.findLockByUsername("member1");
+    }
+
+    @Test
+    public void callCustom() {
+        List<Member> memberCustom = memberRepository.findMemberCustom();
     }
 }
