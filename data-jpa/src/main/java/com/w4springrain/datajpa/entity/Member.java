@@ -1,6 +1,7 @@
 package com.w4springrain.datajpa.entity;
 
 import lombok.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
